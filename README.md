@@ -1,3 +1,4 @@
-# Lama Dev Chat App Starter template
+# Aitzaz Hassangit push origin <branch-name>
+ Chat App Starter template
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Chat Application (Functionalities)  :-Audio Call,VideoCall ,Chat-Privacy , Detail-page , Chat List ,Message Delete For Every One, Delete for me, Send Images, And Document, .
