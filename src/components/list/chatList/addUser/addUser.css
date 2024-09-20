@@ -1,0 +1,68 @@
+.addUsers {
+    width:300px;
+    height: max-content;
+    padding: 15px;
+    background-color: rgba(17, 25, 40, 0.881);
+    border-radius: 6px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    
+  
+    form{
+      display: flex;
+      gap: 6px;
+  
+      input{
+        padding: 10px;
+        border-radius: 8px;
+        border: none;
+        outline: none;
+        width: 215px;
+        
+      }
+  
+      button{
+        width: 65px;
+        padding: 0px 19px;
+        border-radius: 8px;
+        background-color: #1a73e8;
+        color: white;
+        font-size: 12px;
+        border: none;
+        cursor: pointer;
+      }
+    }
+  
+    .userss{
+      margin-top: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      
+
+  
+      .details{
+        display: flex;
+        align-items: center;
+        gap: 10px;
+  
+        img{
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          object-fit: cover;
+        }
+      }
+  
+      button{
+        padding: 10px;
+        border-radius: 10px;
+        background-color: #1a73e8;
+        color: white;
+        border: none;
+        cursor: pointer;
+      }
+    }
+  }

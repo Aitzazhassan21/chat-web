@@ -1,0 +1,17 @@
+/* src/components/CallInvitation.css */
+.call-invitation {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    text-align: center;
+    z-index: 1000;
+  }
+  
+  .call-invitation button {
+    margin: 0 5px;
+    margin-top: -500px;
+  }
+  
