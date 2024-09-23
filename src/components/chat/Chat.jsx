@@ -1,8 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./chat.css";
 import { v4 as uuidv4 } from "uuid";
-import EmojiPicker from "emoji-picker-react";
-import { formatDistanceToNow, parseISO } from 'date-fns';
+import EmojiPicker from "emoji-picker-react"; 
 import {
   arrayUnion,
   doc,
@@ -52,28 +51,33 @@ const Chat = () => {
 
   const endRef = useRef(null);
 
+
   const handleDelete = async (messageId, deleteForAll = false) => {
     const { chatId, messages, senderId } = useChatStore.getState();
     if (!chatId) return;
-
+  
     const updatedMessages = messages.map((msg) => {
       if (msg.id === messageId) {
         if (deleteForAll) {
-          return { ...msg, deletedForEveryone: true, deletedForMe: true };
+          return {
+            ...msg,
+            deletedForEveryone: true, 
+            text: "This message has been deleted for everyone.", 
+          };
         } else {
           if (msg.senderId === senderId || msg.receiverId === senderId) {
-            return { ...msg, deletedForMe: true }; // Mark as deleted for the current user
+            return { ...msg, deletedForMe: true };
           }
         }
       }
       return msg;
     });
-
+  
     const chatRef = doc(db, "chats", chatId);
     try {
       await updateDoc(chatRef, { messages: updatedMessages });
       setChat({ ...chat, messages: updatedMessages });
-
+  
       Swal.fire({
         title: "Success!",
         text: deleteForAll
@@ -90,7 +94,7 @@ const Chat = () => {
       });
     }
   };
-
+  
   const { currentUser } = useUserStore();
   const { chatId, user, isCurrentUserBlocked, isReceiverBlocked } =
     useChatStore();
@@ -202,34 +206,30 @@ const Chat = () => {
   const handleClearChat = async () => {
     try {
       if (selectedMessages.size) {
-        const updatedMessages = chat.messages.map((message) => {
-          if (selectedMessages.has(message.createdAt)) {
-            if (
-              message.senderId === currentUser.id ||
-              message.receiverId === currentUser.id
-            ) {
-              return { ...message, deletedForMe: true };
-            }
-          }
-          return message;
-        });
-
+        // Filter out messages that are selected for deletion
+        const updatedMessages = chat.messages.filter(
+          (message) => !selectedMessages.has(message.createdAt)
+        );
+  
+        // Update Firestore with the new messages array
         await updateDoc(doc(db, "chats", chatId), {
           messages: updatedMessages,
         });
-
+  
         Swal.fire({
           title: "Success!",
-          text: "Selected messages have been cleared successfully!",
+          text: "Selected messages have been deleted successfully!",
           icon: "success",
           confirmButtonText: "OK",
         });
-
+  
+        // Update local state
         setChat((prevChat) => ({
           ...prevChat,
           messages: updatedMessages,
         }));
-
+  
+        // Reset selection
         setSelectedMessages(new Set());
         setSelectAll(false);
       } else {
@@ -250,16 +250,28 @@ const Chat = () => {
       });
     }
   };
+  
 
   const handleSelectAll = () => {
     if (selectAll) {
       setSelectedMessages(new Set());
     } else {
-      setSelectedMessages(new Set(chat.messages.map((msg) => msg.createdAt)));
+      const allMessageIds = new Set(chat.messages.map(msg => msg.createdAt));
+      setSelectedMessages(allMessageIds);
     }
-    setSelectAll(!selectAll);
+    setSelectAll(prev => !prev);
   };
-
+  const handleSelectMessage = (messageId) => {
+    setSelectedMessages(prev => {
+      const newSelected = new Set(prev);
+      if (newSelected.has(messageId)) {
+        newSelected.delete(messageId);
+      } else {
+        newSelected.add(messageId);
+      }
+      return newSelected;
+    });
+  };
   const handleEmoji = (e) => {
     setText((prev) => prev + e.emoji);
     setOpen(false);
@@ -284,10 +296,7 @@ const Chat = () => {
         return;
       }
 
-      const getFormattedTime = (timestamp) => {
-        const date = timestamp?.toDate ? timestamp.toDate() : new Date(timestamp);
-        return formatDistanceToNow(date, { addSuffix: true });
-      };
+    
       const chatData = chatDocSnapshot.data();
       const messages = chatData.messages || [];
 
@@ -548,7 +557,7 @@ const Chat = () => {
             const createdAt = message.createdAt?.toDate
               ? message.createdAt.toDate()
               : new Date(message.createdAt);
-              const formattedTime = formatDistanceToNow(createdAt, { addSuffix: true });
+          
             return (
               <div
                 className={
