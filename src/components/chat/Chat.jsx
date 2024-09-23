@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import "./chat.css";
 import { v4 as uuidv4 } from "uuid";
 import EmojiPicker from "emoji-picker-react";
+import { formatDistanceToNow } from 'date-fns';
 import {
   arrayUnion,
   doc,
@@ -12,7 +13,7 @@ import {
 } from "firebase/firestore";
 import { MdBlockFlipped } from "react-icons/md";
 
-import { FaTimes } from 'react-icons/fa'; // Add this for the close icon
+import { FaTimes } from "react-icons/fa";
 import { db } from "../../lib/firebase";
 import { useChatStore } from "../../lib/chatStore";
 import { useUserStore } from "../../lib/userStore";
@@ -49,80 +50,36 @@ const Chat = () => {
   const [showInfoMenu, setShowInfoMenu] = useState(false);
   const [showDropdown, setShowDropdown] = useState(null);
   const [showDeleteIcon, setShowDeleteIcon] = useState(null);
-  
+
   const endRef = useRef(null);
-  // const handleDelete = async (messageId, deleteForAll = false) => {
-   
-    
-  //   const { chatId, messages, senderId, } = useChatStore.getState();
-  //   if (!chatId) return;
 
-  //   const updatedMessages = messages.map((msg) => {
-  //     if (msg.id === messageId) {
-  //       if (deleteForAll) {
-  //         return { ...msg, deletedForEveryone: true }; // Delete for everyone
-  //       } else {
-  //         // Delete for the current user only, either sender or receiver
-  //         if (msg.senderId === senderId || msg.receiverId === senderId) {
-  //           return { ...msg, deletedForMe: true };
-  //         }
-  //       }
-  //     }
-  //     return msg;
-  //   });
-
-  //   const chatRef = doc(db, "chats", chatId);
-  //   try {
-  //     // Update the Firestore document with the updated messages
-  //     await updateDoc(chatRef, { messages: updatedMessages });
-  //     setChat({ ...chat, messages: updatedMessages });
-
-  //     Swal.fire({
-  //       title: "Success!",
-  //       text: deleteForAll
-  //         ? "Message deleted for everyone!"
-  //         : "Message deleted for you!",
-  //       icon: "success",
-  //     });
-  //   } catch (error) {
-  //     console.error("Error deleting message:", error);
-  //     Swal.fire({
-  //       title: "Error",
-  //       text: "Could not delete the message.",
-  //       icon: "error",
-  //     });
-  //   }
-  // };
   const handleDelete = async (messageId, deleteForAll = false) => {
     const { chatId, messages, senderId } = useChatStore.getState();
     if (!chatId) return;
-  
+
     const updatedMessages = messages.map((msg) => {
       if (msg.id === messageId) {
         if (deleteForAll) {
-          // Delete for everyone
           return { ...msg, deletedForEveryone: true, deletedForMe: true };
         } else {
-          // Delete for the current user only
-          if (msg.senderId === senderId) {
-            return { ...msg, deletedForMe: true }; // Sender marks it as deleted for themselves
-          } else if (msg.receiverId === senderId) {
-            return { ...msg, deletedForMe: true }; // Receiver marks it as deleted for themselves
+          if (msg.senderId === senderId || msg.receiverId === senderId) {
+            return { ...msg, deletedForMe: true }; // Mark as deleted for the current user
           }
         }
       }
       return msg;
     });
-  
+
     const chatRef = doc(db, "chats", chatId);
     try {
-      // Update Firestore document with updated messages
       await updateDoc(chatRef, { messages: updatedMessages });
       setChat({ ...chat, messages: updatedMessages });
-  
+
       Swal.fire({
         title: "Success!",
-        text: deleteForAll ? "Message deleted for everyone!" : "Message deleted for you!",
+        text: deleteForAll
+          ? "Message deleted for everyone!"
+          : "Message deleted for you!",
         icon: "success",
       });
     } catch (error) {
@@ -134,9 +91,6 @@ const Chat = () => {
       });
     }
   };
-  
-  
-
 
   const { currentUser } = useUserStore();
   const { chatId, user, isCurrentUserBlocked, isReceiverBlocked } =
@@ -245,96 +199,38 @@ const Chat = () => {
 
     initZego();
   }, [currentUser?.id]);
-  // const handleClearChat = async () => {
-  //   try {
-  //     if (selectedMessages.size) {
-  //       const updatedMessages = chat.messages.map((message) => {
-  //         if (selectedMessages.has(message.createdAt)) {
-  //           // Mark the message as deleted for the current user
-  //           if (message.senderId === currentUser.id) {
-  //             return { ...message, deletedForMe: true };
-  //           }
-  //         }
-  //         return message;
-  //       });
-  
-  //       // Update the messages in Firestore with the deletedForMe flag
-  //       await updateDoc(doc(db, "chats", chatId), {
-  //         messages: updatedMessages,
-  //       });
-  
-  //       Swal.fire({
-  //         title: "Success!",
-  //         text: "Selected messages have been deleted for you successfully!",
-  //         icon: "success",
-  //         confirmButtonText: "OK",
-  //       });
-  //     } else {
-  //       Swal.fire({
-  //         title: "No messages selected!",
-  //         text: "Please select messages to delete.",
-  //         icon: "info",
-  //         confirmButtonText: "OK",
-  //       });
-  //     }
-  
-  //     setChat({
-  //       ...chat,
-  //       messages: chat.messages.map((msg) => {
-  //         if (selectedMessages.has(msg.createdAt) && msg.senderId === currentUser.id) {
-  //           return { ...msg, deletedForMe: true };
-  //         }
-  //         return msg;
-  //       }),
-  //     });
-  
-  //     setSelectedMessages(new Set());
-  //     setSelectAll(false);
-  //   } catch (error) {
-  //     console.error("Error clearing chat:", error);
-  //     Swal.fire({
-  //       title: "Error!",
-  //       text: "An error occurred while deleting the messages.",
-  //       icon: "error",
-  //       confirmButtonText: "OK",
-  //     });
-  //   }
-  // };
-  
+
   const handleClearChat = async () => {
     try {
-      // Check if any messages have been selected for deletion
       if (selectedMessages.size) {
-        // Map through chat messages and mark them as deleted for the current user
         const updatedMessages = chat.messages.map((message) => {
           if (selectedMessages.has(message.createdAt)) {
-            // Mark the message as deleted for the current user, whether they are sender or receiver
-            if (message.senderId === currentUser.id){
+            if (
+              message.senderId === currentUser.id ||
+              message.receiverId === currentUser.id
+            ) {
               return { ...message, deletedForMe: true };
             }
           }
           return message;
         });
-  
-        // Update Firestore with the new message state
+
         await updateDoc(doc(db, "chats", chatId), {
           messages: updatedMessages,
         });
-  
+
         Swal.fire({
           title: "Success!",
           text: "Selected messages have been cleared successfully!",
           icon: "success",
           confirmButtonText: "OK",
         });
-  
-        // Update local chat state
+
         setChat((prevChat) => ({
           ...prevChat,
           messages: updatedMessages,
         }));
-  
-        // Reset selected messages
+
         setSelectedMessages(new Set());
         setSelectAll(false);
       } else {
@@ -355,8 +251,6 @@ const Chat = () => {
       });
     }
   };
-  
-  
 
   const handleSelectAll = () => {
     if (selectAll) {
@@ -366,8 +260,6 @@ const Chat = () => {
     }
     setSelectAll(!selectAll);
   };
-
- 
 
   const handleEmoji = (e) => {
     setText((prev) => prev + e.emoji);
@@ -396,7 +288,6 @@ const Chat = () => {
       const chatData = chatDocSnapshot.data();
       const messages = chatData.messages || [];
 
-      // Get current time
       const currentTime = new Date();
       const updatedMessages = messages.filter((msg) => {
         const createdAt = msg.createdAt?.toDate
@@ -429,18 +320,15 @@ const Chat = () => {
     let docUrl = null;
 
     try {
-      // Upload image if it exists
       if (img.file) {
         imgUrl = await upload(img.file);
       }
 
-      // Upload document if it exists
       if (docFile.file) {
         docUrl = await upload(docFile.file);
       }
 
-      const messageId = uuidv4(); // Generate a unique message ID
-
+      const messageId = uuidv4();
       const message = {
         id: messageId,
         senderId: currentUser?.id,
@@ -450,17 +338,14 @@ const Chat = () => {
         ...(docUrl && { doc: docUrl }),
       };
 
-      // Update Firestore chat document
       await updateDoc(doc(db, "chats", chatId), {
         messages: arrayUnion(message),
       });
 
-      // Clear inputs after sending
       setText("");
       setImg({ file: null, url: "" });
       setDocFile({ file: null, url: "" });
 
-      // Update user chats in Firestore
       await updateUserChats(message);
     } catch (err) {
       console.error("Error sending message:", err);
@@ -472,7 +357,6 @@ const Chat = () => {
     }
   };
 
-  // Function to update user chats
   const updateUserChats = async (lastMessage) => {
     const userIDs = [currentUser?.id, user?.id];
     for (const id of userIDs) {
@@ -646,10 +530,8 @@ const Chat = () => {
           />
         </div>
 
-        {/* Filter and display messages */}
         {chat.messages
           .filter((message) => {
-            // Filter messages based on deletion status for the current user
             if (
               message.deletedForMe &&
               (message.senderId === currentUser?.id ||
@@ -663,7 +545,7 @@ const Chat = () => {
             const createdAt = message.createdAt?.toDate
               ? message.createdAt.toDate()
               : new Date(message.createdAt);
-
+              const formattedTime = formatDistanceToNow(createdAt, { addSuffix: true });
             return (
               <div
                 className={
@@ -672,13 +554,15 @@ const Chat = () => {
                     : "message"
                 }
                 key={index}
-                onMouseEnter={() => setShowDeleteIcon(index)} // Show delete icon on hover
-                onMouseLeave={() => setShowDeleteIcon(null)} // Hide delete icon on hover out
+                onMouseEnter={() => setShowDeleteIcon(index)}
+                onMouseLeave={() => setShowDeleteIcon(null)}
               >
                 <div className="texts">
-                  {/* Show message content based on deletion flags */}
                   {message.deletedForEveryone ? (
-                    <p><MdBlockFlipped />This Message Deleted For Everyone.</p>
+                    <p>
+                      <MdBlockFlipped />
+                      This Message Deleted For Everyone.
+                    </p>
                   ) : (
                     <>
                       {message.img && (
@@ -696,7 +580,7 @@ const Chat = () => {
                         </p>
                       )}
                       {message.text && <p>{message.text}</p>}
-                      <span className="timestamp">{format(createdAt)}</span>
+                      <span className="timestamp">{formattedTime}</span>
 
                       {selectAll && (
                         <div className="topic">
@@ -713,94 +597,88 @@ const Chat = () => {
                   )}
 
                   {showDropdown === index && (
-  <div
-    className="message-container"
-    style={{ position: "relative" }}
-  >
-    <div
-      className="message-dropdown"
-      style={{
-        position: "fix",
-        bottom: "10px",
-        left: "150px",
-        display: "flex",
-        flexDirection: "column",
-        backgroundColor: "#fff",
-        padding: "5px 12px",
-        justifyContent: "center",
-        alignItems: "center",
-        borderRadius: "5px",
-        boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
-      }}
-    >
-      {/* Button for 'Delete for Me' */}
-      <FaTimes
-        color="black"
-        className="cross"
-        onClick={() => setShowDropdown(null)}  // Close dropdown on click
-        style={{ cursor: "pointer", alignSelf: "flex-end" }}
-      />
-      <button
-        onClick={() => {
-          handleDelete(message.id, false);
-          setShowDropdown(null); // Close dropdown after action
-        }}
-        className="delete-option"
-        style={{
-          padding: "8px 30px",
-          cursor: "pointer",
-          border: "none",
-          backgroundColor: "#e0e0e0",
-          textAlign: "center",
-          marginBottom: "5px",
-          color: "black",
-          fontWeight: "bold",
-          transition: "background-color 0.3s ease",
-         
-        }}
-        onMouseEnter={(e) =>
-          (e.target.style.backgroundColor = "#f5f5f5")
-        }
-        onMouseLeave={(e) =>
-          (e.target.style.backgroundColor = "#e0e0e0")
-        }
-      >
-        Delete for Me
-      </button>
+                    <div
+                      className="message-container"
+                      style={{ position: "relative" }}
+                    >
+                      <div
+                        className="message-dropdown"
+                        style={{
+                          position: "fix",
+                          bottom: "10px",
+                          left: "150px",
+                          display: "flex",
+                          flexDirection: "column",
+                          backgroundColor: "#fff",
+                          padding: "5px 12px",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          borderRadius: "5px",
+                          boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
+                        }}
+                      >
+                        <FaTimes
+                          color="black"
+                          className="cross"
+                          onClick={() => setShowDropdown(null)} // Close dropdown on click
+                          style={{ cursor: "pointer", alignSelf: "flex-end" }}
+                        />
+                        <button
+                          onClick={() => {
+                            handleDelete(message.id, false);
+                            setShowDropdown(null); // Close dropdown after action
+                          }}
+                          className="delete-option"
+                          style={{
+                            padding: "8px 30px",
+                            cursor: "pointer",
+                            border: "none",
+                            backgroundColor: "#e0e0e0",
+                            textAlign: "center",
+                            marginBottom: "5px",
+                            color: "black",
+                            fontWeight: "bold",
+                            transition: "background-color 0.3s ease",
+                          }}
+                          onMouseEnter={(e) =>
+                            (e.target.style.backgroundColor = "#f5f5f5")
+                          }
+                          onMouseLeave={(e) =>
+                            (e.target.style.backgroundColor = "#e0e0e0")
+                          }
+                        >
+                          Delete for Me
+                        </button>
 
-      {/* Button for 'Delete for Everyone' */}
-      <button
-        onClick={() => {
-          handleDelete(message.id, true);
-          setShowDropdown(null); // Close dropdown after action
-        }}
-        className="delete-option"
-        style={{
-          padding: "8px 38px",
-          cursor: "pointer",
-          border: "none",
-          backgroundColor: "#e0e0e0",
-          textAlign: "center",
-          fontWeight: "bold",
-          color: "black",
-          transition: "background-color 0.3s ease",
-       
-        }}
-        onMouseEnter={(e) =>
-          (e.target.style.backgroundColor = "#f5f5f5")
-        }
-        onMouseLeave={(e) =>
-          (e.target.style.backgroundColor = "#e0e0e0")
-        }
-      >
-        Everyone
-      </button>
-    </div>
-  </div>
-)}
+                        <button
+                          onClick={() => {
+                            handleDelete(message.id, true);
+                            setShowDropdown(null);
+                          }}
+                          className="delete-option"
+                          style={{
+                            padding: "8px 38px",
+                            cursor: "pointer",
+                            border: "none",
+                            backgroundColor: "#e0e0e0",
+                            textAlign: "center",
+                            fontWeight: "bold",
+                            color: "black",
+                            transition: "background-color 0.3s ease",
+                          }}
+                          onMouseEnter={(e) =>
+                            (e.target.style.backgroundColor = "#f5f5f5")
+                          }
+                          onMouseLeave={(e) =>
+                            (e.target.style.backgroundColor = "#e0e0e0")
+                          }
+                        >
+                          Everyone
+                        </button>
+                      </div>
+                    </div>
+                  )}
 
-
-                  {/* Delete icon to show the dropdown */}
                   {showDeleteIcon === index && (
                     <img
                       onClick={() => setShowDropdown(index)}
@@ -813,7 +691,7 @@ const Chat = () => {
                         position: "absolute",
                         bottom: "6px",
                         right: "-2px",
-                        borderRadius:"50%"
+                        borderRadius: "50%",
                       }}
                       alt="Delete"
                     />
@@ -822,19 +700,15 @@ const Chat = () => {
               </div>
             );
           })}
-
         <div ref={endRef} />
-        
       </div>
-
       <div className="bottom">
         <div className="icons">
           <div
             className="upload-icon"
-            onClick={() => setShowMenuu((prev) => !prev)} // Toggling menu
+            onClick={() => setShowMenuu((prev) => !prev)}
           >
             {showMenuu ? <FaMinus /> : <FaPlus />}{" "}
-            {/* Changing icon based on state */}
           </div>
           {showMenuu && (
             <div className="dropdown-menuuu">
@@ -849,7 +723,6 @@ const Chat = () => {
                   style={{ display: "none" }}
                 />
               </label>
-
               <label className="menu-item" htmlFor="doc-upload">
                 <img src="./document.png" alt="Documents" />
                 <span>Documents</span>
