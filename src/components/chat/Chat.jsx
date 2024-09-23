@@ -580,7 +580,7 @@ const Chat = () => {
                         </p>
                       )}
                       {message.text && <p>{message.text}</p>}
-                      <span className="timestamp">{formattedTime}</span>
+                      <span className="timestamp">{format(createdAt)}</span>
 
                       {selectAll && (
                         <div className="topic">
