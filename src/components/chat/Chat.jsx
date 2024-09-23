@@ -16,7 +16,7 @@ import { db } from "../../lib/firebase";
 import { useChatStore } from "../../lib/chatStore";
 import { useUserStore } from "../../lib/userStore";
 import upload from "../../lib/upload";
-import { format } from "timeago.js";
+import { format } from "date-fns";
 import { ZegoUIKitPrebuilt } from "@zegocloud/zego-uikit-prebuilt";
 import { ZIM } from "zego-zim-web";
 import Swal from "sweetalert2";
@@ -441,6 +441,10 @@ const Chat = () => {
       alert("Failed to send call. Please try again later.");
     }
   };
+  const formatTimestamp = (timestamp) => {
+    const utcDate = new Date(timestamp).toISOString();
+    return format(new Date(utcDate), "PPPpp"); // "PPPpp" will format the date in a human-readable way
+  };
   return (
     <div className="chat">
       <div className="top">
@@ -592,8 +596,9 @@ const Chat = () => {
                         </p>
                       )}
                       {message.text && <p>{message.text}</p>}
-                      <span className="timestamp">{format(createdAt)}</span>
-
+                      <span className="timestamp">
+                      {formatTimestamp(createdAt)}
+                    </span>
                       {selectAll && (
                         <div className="topic">
                           <input
