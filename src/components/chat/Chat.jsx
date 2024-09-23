@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import "./chat.css";
 import { v4 as uuidv4 } from "uuid";
 import EmojiPicker from "emoji-picker-react";
-import { formatDistanceToNow } from 'date-fns';
+import { formatDistanceToNow, parseISO } from 'date-fns';
 import {
   arrayUnion,
   doc,
@@ -12,7 +12,6 @@ import {
   setDoc,
 } from "firebase/firestore";
 import { MdBlockFlipped } from "react-icons/md";
-
 import { FaTimes } from "react-icons/fa";
 import { db } from "../../lib/firebase";
 import { useChatStore } from "../../lib/chatStore";
@@ -285,6 +284,10 @@ const Chat = () => {
         return;
       }
 
+      const getFormattedTime = (timestamp) => {
+        const date = timestamp?.toDate ? timestamp.toDate() : new Date(timestamp);
+        return formatDistanceToNow(date, { addSuffix: true });
+      };
       const chatData = chatDocSnapshot.data();
       const messages = chatData.messages || [];
 
