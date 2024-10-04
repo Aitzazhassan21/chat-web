@@ -1,14 +1,21 @@
 .userInfo{
-    padding: 20px;
+    padding: 10px;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    background-color: white;
+    margin-left: -10px;
+    margin-right: -4px;
+    border-bottom: 1px solid rgba(61, 51, 51,0.1);
 
     .user{
         display: flex;
         align-items: center;
         gap: 15px;
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
         img{
+            margin-left: 6px;
+            
             width: 40px;
             height: 40px;
             border-radius: 50%;
@@ -20,12 +27,14 @@
         display: flex;
         gap:15px;
         margin-left: 3px;
+   
         
         img{
             width:50px;
             height:50px;
             cursor: pointer;
-            border-radius: 36px;
+            border-radius: 16px;
+            margin-right: -2px;
         }
     }
 }

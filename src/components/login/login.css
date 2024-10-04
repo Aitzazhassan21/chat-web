@@ -1,4 +1,4 @@
-.login {
+ /* .login {
     width: 100%;
     height: 100%;
     display: flex;
@@ -23,8 +23,8 @@
           padding: 20px;
           border: none;
           outline: none;
-          background-color: rgba(17, 25, 40, 0.6);
-          color: white;
+          background-color:whitesmoke;
+          color: rgba(17, 25, 40, 0.6);
           border-radius: 5px;
         }
   
@@ -35,6 +35,7 @@
           justify-content: space-between;
           cursor: pointer;
           text-decoration: underline;
+          color: #a5a5a5;
   
           img {
             width: 50px;
@@ -68,4 +69,222 @@
       width: 2px;
       background-color: #dddddd35;
     }
+  }
+ .item  h2{
+    color: rgba(3, 3, 7,0.7);
+  }
+
+
+   */
+   * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body, html {
+    height: 100%;
+  }
+  
+  .login {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #f5f7fa; /* Elegant light background */
+    padding: 20px;
+  }
+  
+  .login .item {
+    width: 100%;
+    max-width: 400px; /* Limit form width */
+    background: white;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0px 8px 16px rgba(155, 219, 249, 0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+  
+  .login .item h2 {
+    color: #333; 
+    font-weight: 600;
+    font-size: 24px;
+  }
+  
+  .login .item form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 20px;
+  }
+  
+  .login .item input {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #ddd;
+    outline: none;
+    border-radius: 5px;
+    background-color: #fafafa;
+    color: #333;
+    font-size: 16px;
+    transition: all 0.3s ease;
+  }
+  
+  .login .item input:focus {
+    border-color: #1f8ef1; /* Focus border color */
+    box-shadow: 0 0 5px rgba(31, 142, 241, 0.3);
+  }
+  
+  .login .item label {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    cursor: pointer;
+    color: #555;
+    font-size: 14px;
+    text-decoration: underline;
+  }
+  
+  .login .item label img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    opacity: 0.8;
+  }
+  
+  .login .item button {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    background-color: #1f8ef1;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .login .item button:hover {
+    background-color: #007bff;
+  }
+  
+  .login .item button:disabled {
+    cursor: not-allowed;
+    background-color: #1f8ef19c;
+  }
+  
+  .login .item .link {
+    margin-top: 10px;
+    color: #007bff;
+    text-decoration: none;
+    font-size: 14px;
+  }
+  
+  .login .separator {
+    height: 80%;
+    width: 2px;
+    background-color: #dddddd35;
+  }
+  
+  /* iPad responsiveness */
+  @media (max-width: 1024px) {
+    .login .item {
+      padding: 30px;
+      max-width: 500px;
+      height: 47vh;
+    }
+  
+    .login .item h2 {
+      font-size: 22px;
+    }
+  
+    .login .item input {
+      padding: 12px;
+    }
+  
+    .login .item button {
+      padding: 12px;
+    }
+  }
+  
+  /* Small screen (like mobile phones) responsiveness */
+  @media (max-width: 768px) {
+    .login {
+      padding: 0 15px;
+      height: 63vh;
+    }
+  
+    .login .item {
+      padding: 20px;
+    }
+  
+    .login .item h2 {
+      font-size: 20px;
+    }
+  
+    .login .item input {
+      padding: 10px;
+      font-family:  monospace;
+    }
+  
+    .login .item button {
+      padding: 10px;
+    }
+  
+    .login .separator {
+      display: none;
+    }
+  }
+  
+  /* Extra small screens (mobile devices) */
+  @media (max-width: 576px) {
+    .login {
+      padding: 0px 8px;
+      height: auto;
+     margin: auto;
+    }
+  
+    .login .item {
+      padding: 13px;
+    }
+  
+    .login .item h2 {
+      font-size: 18px;
+      font-family:  monospace;
+      margin-right: 23px;
+    }
+  
+    .login .item input {
+      padding: 18px;
+      font-size: 14px;
+    }
+  
+    .login .item button {
+      padding: 10px;
+      font-size: 14px;
+      margin-bottom: 23px;
+    }
+    .logo{
+      height: 45px;
+      width: 49px;
+
+    }
+  }
+  
+  h2{
+    font-family:  monospace;
+  }
+  h2 .logo{
+    width: 50px;
+    height: 50px;
+    margin-left: -43px;
+    margin-right: 20px;
   }

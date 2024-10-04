@@ -1,3 +1,4 @@
+
 * {
   margin: 0;
   padding: 0;
@@ -6,27 +7,119 @@
     "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
 }
 body{
-  background-image: url("/bg.jpg");
-  display: flex;
+  background-color: white;
+  width: 100%;
+
   align-items: center;
   justify-content: center;
   height:100vh;
   color:aliceblue;
  
+ 
 }
-.container{
- width:92vw ;
- height: 92vh;
- background-color: rgba(17,25,40,0.75);
+.container-fluid{
+ width: 100%;;
+ height:100vh;
+ background-color:white;
  backdrop-filter: blur(19px) staurate(180%);
- border-radius: 12px;
+ border-radius: 1px;
  border: 1px solid rgba(255,255,255,0.125);
 display: flex;
+color: aliceblue;
+
+}
+.app-container {
+  display: flex;
+  flex-direction: row;
 }
 
-.loading{
-  padding: 50px;
-  font-size: 36px;
-  border-radius: 10px;
-  background-color: rgba(17, 25, 40, 0.9);
+/* Adjust chat and list containers for small screens */
+@media (max-width: 1024px) {
+  .detail-container {
+    display: none; /* Hide details on small screens */
+  }
+
+  .list-container, .chat-container {
+    flex: 1; /* Ensure chat and list containers take up available space */
+    width: 100%; /* Full width on small screens */
+  }
+
+  .chat-container {
+    display: block; /* Ensure it's visible */
+  }
 }
+
+/* On large screens, show all components */
+@media (min-width: 1024px) {
+  .list-container, .chat-container, .detail-container {
+    flex: 1; /* All components take up space equally */
+  }
+}
+/* Container to hold the loader image */
+.loader {
+  position: fixed; /* Fixed position to cover the whole screen */
+  top: 48%; /* Center vertically */
+ right: 48%; /* Center horizontally */
+  transform: translate(-50%, -50%); /* Adjust to center properly */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw; /* Full viewport width */
+  height: 100vh; /* Full viewport height */
+  z-index: 9999; /* High z-index to overlay the rest of the content */
+  background-color: rgba(17, 25, 40, 0.9); /* Dark semi-transparent background */
+  border-radius: 50%;
+}
+
+/* Media Queries for Small and Medium Screens */
+@media (max-width: 768px) {
+  .loader {
+    width: 100vw; /* Keep full width */
+    height: 100vh; /* Keep full height */
+    top: 46%; /* Keep centered */
+    right: 40%; /* Keep centered */
+    transform: translate(-50%, -50%); /* Centering */
+  }
+}
+
+
+
+/* Loader image styling */
+.loader {
+  max-width: 100px; /* Initial maximum width */
+  max-height: 100px; /* Initial maximum height */
+  animation: resizeLoader 1s ease-in-out infinite; /* Animation for smooth resizing */
+  transition: width 0.3s, height 0.3s; /* Smooth transition for size changes */
+}
+
+/* Keyframes for resizing the loader image */
+@keyframes resizeLoader {
+  0%, 100% {
+    transform: scale(1); /* Default size */
+  }
+  50% {
+    transform: scale(1.2); /* Grow the image */
+  }
+}
+.chat{
+  display: flex; /* Make sure it's a flex container */
+  flex-direction: column;
+  width: 100%; /* Ensure it's not squeezed on smaller screens */
+}.container,
+.container-fluid,
+.container-lg,
+.container-md,
+.container-sm,
+.container-xl,
+.container-xxl {
+ 
+    width: 100%;
+    padding-right: calc(var(--bs-gutter-x) * 0.5);
+    padding-left: calc(var(--bs-gutter-x) * 0.5);
+    margin-right: 0 !important; /* Remove right margin */
+    margin-left: 0 !important; /* Remove left margin */
+    --bs-gutter-x: 0rem;
+    --bs-gutter-y: 0;
+   }
+
+

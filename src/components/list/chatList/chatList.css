@@ -1,35 +1,33 @@
-.chatList {
+.list {
   flex: 1;
-  overflow: hidden; /* Use auto to allow scrolling only when needed */
+  overflow-y: auto;
   position: relative;
-  width: 100%; /* Ensure the component takes full width of the parent */
+  width: 100%;
 
-
-  /* Scrollbar styles */
   &::-webkit-scrollbar {
-    width: 5px; /* Set scrollbar width */
+    width: 5px;
   }
 
   &::-webkit-scrollbar-track {
-    background: transparent; /* Transparent track by default */
+    background: transparent;
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color: #333; /* Thumb color */
-    border-radius: 10px; /* Round corners for the thumb */
-    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+    background-color: rgba(255, 255, 255, 0.0);
+    border-radius: 10px;
+    transition: background-color 0.3s ease;
   }
 
-  /* Hover effect to show scrollbar */
   &:hover::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.1); /* Light background on hover */
+    background: rgba(255, 255, 255, 0.0);
   }
 
   &:hover::-webkit-scrollbar-thumb {
-    background-color: #555; /* Darker color on hover */
+    background-color: rgba(255, 255, 255, 0.0);
   }
 
   .search {
+    margin-top: 6px;
     display: flex;
     align-items: center;
     gap: 4px;
@@ -38,7 +36,7 @@
 
     .searchBar {
       flex: 1;
-      background-color: rgba(17, 25, 40, 0.5);
+      background-color: #f0f2f5;
       display: flex;
       align-items: center;
       gap: 10px;
@@ -49,79 +47,78 @@
         background-color: transparent;
         border: none;
         outline: none;
-        color: aliceblue;
+        color: #5a5a5a;
         flex: 1;
-      }
-
-      img {
-        width: 20px;
-        height: 20px;
       }
     }
 
     .add {
-      width: 30px;
-      height: 32px;
-      background-color: rgba(17, 25, 40, 0.5);
+      width: 37px;
+      height: 39px;
+      background-color: #f0f2f5;
       padding: 10px;
       border-radius: 10px;
       cursor: pointer;
+      color: gray;
     }
   }
 
   .item {
     display: flex;
     align-items: center;
+    background-color: rgb(238, 241, 241);
     gap: 14px;
     padding: 10px;
+    margin-right: -72px;
     cursor: pointer;
-    border-bottom: 1px solid #dddddd35;
-    width: 100%; /* Force the chat item to be 100% of the parent container */
-    overflow: hidden; /* Ensure no overflow happens */
- 
+    border-bottom: 1px solid rgba(83, 83, 87, 0.1);
+    width: 100%;
+    overflow: hidden;
+
     img {
       width: 50px;
       height: 50px;
       border-radius: 50%;
       object-fit: cover;
     }
- 
 
-  .texts {
-    display: flex;
-    flex-direction: column;
-    gap:10px;
-    flex: 1; /* Take up the remaining space */
-    max-width: 40%; /* Set a max width to ensure text doesn't stretch too far */
-    overflow: hidden; /* Prevent overflow */
-    
-    span {
-      font-weight: 400;
-      white-space: nowrap; /* Prevent wrapping */
+    .texts {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex: 1;
+      max-width: 40%;
       overflow: hidden;
-      text-overflow: ellipsis; /* Show ellipsis when text overflows */
-    }
-   
-    p {
-      font-size: 12px;
-      font-weight: 300;
-      white-space: nowrap; /* Prevent wrapping */
-      overflow: hidden;
-      text-overflow: ellipsis; /* Show ellipsis when text overflows */
+
+      span {
+        font-weight: 400;
+        white-space: nowrap;
+        overflow: hidden;
+        color: #0f0a0a;
+        font-family: monospace;
+        text-overflow: ellipsis;
+      }
+
+      p {
+        font-size: 12px;
+        font-weight: 300;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
     }
   }
 }
-}
 
-
-.delete{
+.delete {
   align-self: flex-end;
- 
 }
-.delete img{
+
+.delete img {
   height: 20px;
   width: 20px;
 }
+
 .item {
   display: flex;
   align-items: center;
@@ -137,8 +134,6 @@
   object-fit: cover;
 }
 
-
-
 .item .delete {
   visibility: hidden;
   margin-left: auto;
@@ -150,3 +145,44 @@
   font-size: 7px;
 }
 
+/* Media Queries */
+
+/* Small Screens */
+@media (max-width: 480px) {
+  .search {
+    margin-left: -10; /* Remove left margin on small screens */
+  }
+
+  .item {
+    padding: 10px; /* Adjust padding for smaller screens */
+  }
+
+  .item img {
+    width: 40px; /* Adjust image size for smaller screens */
+    height: 40px;
+  }
+
+  .texts {
+    max-width: 70%; /* Adjust text container width */
+  }
+}
+
+/* Medium Screens */
+@media (min-width: 481px) and (max-width: 768px) {
+  .search {
+    margin-left: -10; /* Adjust margin for medium screens */
+  }
+
+  .item {
+    padding: 12px; /* Adjust padding for medium screens */
+  }
+
+  .item img {
+    width: 45px; /* Adjust image size for medium screens */
+    height: 45px;
+  }
+
+  .texts {
+    max-width: 60%; /* Adjust text container width */
+  }
+}

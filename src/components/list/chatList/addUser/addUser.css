@@ -2,7 +2,7 @@
     width:300px;
     height: max-content;
     padding: 15px;
-    background-color: rgba(17, 25, 40, 0.881);
+    background-color: rgba(182, 184, 189, 0.900);
     border-radius: 6px;
     position: absolute;
     top: 50%;
@@ -12,14 +12,14 @@
   
     form{
       display: flex;
-      gap: 6px;
+      gap: 1px;
   
       input{
-        padding: 10px;
+        padding: 6px 12px;
         border-radius: 8px;
         border: none;
         outline: none;
-        width: 215px;
+        width: 195px;
         
       }
   
@@ -27,11 +27,15 @@
         width: 65px;
         padding: 0px 19px;
         border-radius: 8px;
-        background-color: #1a73e8;
+        margin-left: 12px;
+        background-color: #4a93f3;
         color: white;
         font-size: 12px;
         border: none;
         cursor: pointer;
+      }
+      button:hover{
+ background-color: #1778f7;
       }
     }
   
@@ -61,6 +65,8 @@
         border-radius: 10px;
         background-color: #1a73e8;
         color: white;
+        text-align: center;
+        justify-content: center;
         border: none;
         cursor: pointer;
       }

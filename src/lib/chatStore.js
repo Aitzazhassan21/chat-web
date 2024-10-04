@@ -117,7 +117,12 @@ export const useChatStore = create((set) => ({
       useChatStore.getState().syncChatMessages(chatId);
     }
   },
-
+ // Function to toggle the block status
+ changeBlock: () => {
+  set((state) => ({
+    isReceiverBlocked: !state.isReceiverBlocked,
+  }));
+},
   // Sync chat messages from Firestore using onSnapshot
   syncChatMessages: (chatId) => {
     if (!chatId) {

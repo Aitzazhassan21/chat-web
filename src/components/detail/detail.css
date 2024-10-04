@@ -2,6 +2,7 @@
   flex: 1;
   display: flex;
   flex-direction: column;
+  margin-right: 0px;
 }
 
 .users {
@@ -9,8 +10,10 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  color: #5a5a5a;
   gap: 10px;
   border-bottom: 1px solid #dddddd35;
+  background-color: #f0f2f5;
 }
 
 .users img {
@@ -26,6 +29,7 @@
   flex-direction: column;
   gap: 20px;
   overflow-y: auto;
+  color: #5a5a5a;
 }
 
 .info::-webkit-scrollbar {
@@ -33,7 +37,7 @@
 }
 
 .info::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(248, 244, 244, 0.1);
   border-radius: 4px;
 }
 
@@ -41,6 +45,7 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
+
 }
 
 .options .titles {
@@ -58,6 +63,7 @@
   background-color: rgba(17, 25, 40, 0.3);
   padding: 5px;
   border-radius: 50%;
+
   cursor: pointer;
 }
 
@@ -73,12 +79,15 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+
 }
 
 .photoDetail {
   display: flex;
   align-items: center;
   gap: 15px;
+  background-color: #f0f2f5;
+  padding: 10px;
 }
 
 .photoDetail img {
@@ -92,6 +101,7 @@
   font-size: 14px;
   color: lightgray;
   font-weight: 300;
+  color: #5a5a5a;
 }
 
 .icon {
@@ -112,32 +122,69 @@
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  justify-content: center;
+  text-align: center;
 }
 
 .block:hover {
   background-color: rgba(220, 20, 60, 0.796);
 }
 
-.logout{
-margin-top: -10px;
-  padding: 12px 71px ;
+.logout {
+  margin-top: -10px;
+  padding: 12px 71px;
   border: none;
   border-radius: 5px;
+  justify-content: center;
+  text-align: center;
   color: aliceblue;
-  background-color: #1a73e8;}
-  .logout:hover{
-    background-color:#044dac ;
-  }
+  background-color: #1a73e8;
+}
 
-  /* ======== */
-.icon{
-width: 20px;
-height: 20px;
-background-color: rgba(17, 25, 40, 0.3);
-padding: 10px;
-border-radius: 50%;
-cursor: pointer;
+.logout:hover {
+  background-color: #044dac;
 }
-.imagess{
-width: 122px;
+
+/* ======== */
+.icon {
+  width: 20px;
+  height: 20px;
+  background-color: rgba(17, 25, 40, 0.3);
+  padding: 10px;
+  border-radius: 50%;
+  cursor: pointer;
 }
+
+.imagess {
+  width: 122px;
+}
+
+.arrow {
+  margin-left: 63px;
+}
+.exi-button{
+  display: none;
+}
+@media (max-width: 600px) {
+.exi-button{
+  color: #3a3535;
+  background:transparent;
+  position: absolute;
+  border: none;
+  font-size: 27px;
+  margin-right: 23px;
+  display: block;
+  margin-top: 20px;
+  
+}}
+@media (min-width: 768px) {
+  .exi-button{
+    color: #3a3535;
+    background:transparent;
+    position: absolute;
+    border: none;
+    font-size: 27px;
+    margin-right: 23px;
+    display: block;
+    
+  }}
