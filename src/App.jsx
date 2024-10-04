@@ -48,7 +48,7 @@ const App = () => {
   if (isLoading) {
     return (
       <div className="loading">
-        <img src="public/loading.png" alt="Loading..." className="loader" />
+        <img src="./loading.png" alt="Loading..." className="loader" />
       </div>
     );
   }
